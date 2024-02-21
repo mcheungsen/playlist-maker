@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend-container
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production  # Changez cela selon vos besoins
+    volumes:
+      - ./backend:/app 
+    #depends_on:
+    #  - mariadb
+  
+  front:
+    build:
+      context: ./playlist-project
+    container_name: frontend-container
+    ports:
+      - "8083:80"
+    environment:
+      NODE_ENV: production  # Changez cela selon vos besoins
+    depends_on:
+      - backend
