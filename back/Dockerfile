@@ -1,5 +1,5 @@
 # Utiliser l'image officielle de Node.js
-FROM node:21.2.0
+FROM node:14
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Exposer le port sur lequel l'application Express écoute
-EXPOSE 3000
+EXPOSE 80
 
 # Commande pour démarrer l'application
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

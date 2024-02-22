@@ -1,27 +1,46 @@
 version: '3'
-
-services:
-
-  backend:
-    build:
-      context: ./backend
-    container_name: backend-container
-    ports:
-      - "3001:3001"
-    environment:
-      NODE_ENV: production  # Changez cela selon vos besoins
-    volumes:
-      - ./backend:/app 
-    #depends_on:
-    #  - mariadb
-  
+services:    
   front:
     build:
       context: ./playlist-project
-    container_name: frontend-container
-    ports:
-      - "8083:80"
-    environment:
-      NODE_ENV: production  # Changez cela selon vos besoins
+    volumes:
+      - ./playlist-project/src:/app/src
     depends_on:
-      - backend
+      - back
+
+  back:
+    build:
+      context: ./back
+    volumes:
+      - ./back/src:/app/src
+    depends_on: 
+      - mariadb
+
+  reverseproxy:
+    restart: always
+    build:
+      context: ./reverse-proxy
+    depends_on:
+      - back
+      - front
+    volumes:
+      - ./reverse-proxy/log:/var/log/nginx
+    ports:
+      - 8083:80
+
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mdp
+      MYSQL_DATABASE: tracks_db
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./back/src/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+
+
+
+volumes:
+  mariadb-data:
