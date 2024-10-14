@@ -1,0 +1,42 @@
+# Symfony specific files
+/var/
+/vendor/
+/.env
+/.env.local
+/.env.*.local
+/.phpunit.result.cache
+/public/bundles/
+/translations/
+/node_modules/
+/npm-debug.log*
+/yarn-error.log*
+
+# Docker related
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# MySQL specific
+*.sql
+*.sql.gz
+*.log
+*.pid
+mysql_data/
+.database/
+
+# Nuxt specific files
+.nuxt/
+/dist/
+/*.log
+/.output
+/node_modules/
+/yarn.lock
+/package-lock.json
+
+# IDE specific
+.vscode/
+/.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db

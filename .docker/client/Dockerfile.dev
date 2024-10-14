@@ -1,0 +1,16 @@
+FROM node:18.14 as client
+
+RUN npm install -g pnpm
+RUN npm i -g @antfu/ni
+ENV NODE_ENV=development
+WORKDIR /home/node/app
+
+FROM client as build 
+COPY --link package.json package-lock.json ./
+RUN pnpm install
+
+
+FROM client 
+COPY --from=build ./node_modules /home/node/app/node_modules
+
+CMD ["pnpm", "run", 'dev']

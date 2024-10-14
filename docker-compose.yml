@@ -1,0 +1,69 @@
+version: "3.4"
+services:
+  api-nginx:
+    build:
+      context: ./.docker/nginx/
+      target: api-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - sources:/var/www/app
+    depends_on:
+      - php
+    networks:
+      - network
+
+  php:
+    build:
+      context: ./.docker/php/
+      target: php
+    expose:
+      - "9000"
+    volumes:
+      - sources:/var/www/app
+      - ssh:/var/www/.ssh
+    depends_on:
+      - db
+    networks:
+      - network
+
+  db:
+    image: mysql:8.0-debian
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: to_name
+      MYSQL_USER: to_name
+      MYSQL_PASSWORD: to_name
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - network
+
+volumes:
+  sources:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/api
+      o: bind
+  ssh:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/.ssh
+      o: bind
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.database/to_name
+      o: bind
+networks:
+  network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
