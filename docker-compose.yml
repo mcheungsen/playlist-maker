@@ -31,9 +31,9 @@ services:
     image: mysql:8.0-debian
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: to_name
-      MYSQL_USER: to_name
-      MYSQL_PASSWORD: to_name
+      MYSQL_DATABASE: playlist
+      MYSQL_USER: playlist
+      MYSQL_PASSWORD: playlist
     volumes:
       - db:/var/lib/mysql
     ports:
@@ -58,7 +58,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/.database/to_name
+      device: ${PWD}/.database/playlist
       o: bind
 networks:
   network:
